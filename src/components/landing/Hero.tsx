@@ -8,7 +8,7 @@ export function Hero() {
             <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent to-white/50 pointer-events-none" />
 
             <div className="relative z-10 max-w-3xl flex flex-col items-center gap-6 animate-in fade-in zoom-in duration-700">
-                <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-foreground sm:text-5xl">
+                <h1 className="text-4xl md:text-6xl tracking-tighter text-foreground sm:text-5xl">
                     Detalları gör, fərqi hiss et
                 </h1>
                 <p className="text-lg md:text-xl text-muted-foreground max-w-lg">
