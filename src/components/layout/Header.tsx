@@ -1,25 +1,38 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
-import { List, X, ShoppingBag, MagnifyingGlass } from '@phosphor-icons/react';
+import Image from 'next/image';
+import { List, X, ShoppingBag, MagnifyingGlass, Plus, Minus, ArrowRight } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-
-const NAV_LINKS = [
-  { href: '/category/men', label: 'Kişi' },
-  { href: '/category/women', label: 'Qadın' },
-  { href: '/category/kids', label: 'Uşaq' },
-  { href: '/category/accessories', label: 'Aksesuar' },
-];
+import { MENU_DATA } from '@/lib/menu-data';
+import { MegaMenu } from './MegaMenu';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Mega Menu State (Desktop)
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+
+  // Mobil Menyu Vəziyyəti (State)
+  const [mobileTab, setMobileTab] = useState(MENU_DATA[0].label);
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+
+  const toggleAccordion = (title: string) => {
+    setExpandedItems(prev =>
+      prev.includes(title) ? prev.filter(t => t !== title) : [...prev, title]
+    );
+  };
+
+  const activeCategory = MENU_DATA.find(c => c.label === mobileTab);
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
-      <div className="container mx-auto flex h-24 items-center justify-center md:justify-between px-4 md:px-6 relative">
+    <header
+      className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md"
+      onMouseLeave={() => setHoveredCategory(null)} // Header-dən çıxanda bağla
+    >
+      <div className="container mx-auto flex h-24 items-center justify-center md:justify-between px-4 md:px-6 relative z-50 bg-transparent">
         {/* Mobil Menyu Düyməsi */}
         <button
           className="md:hidden absolute left-4 p-2 -ml-2 text-foreground z-50"
@@ -28,16 +41,30 @@ export function Header() {
           {isMenuOpen ? <X size={26} /> : <List size={26} />}
         </button>
 
-        {/* 1. Sol: Naviqasiya (Yalnız Desktop) */}
-        <nav className="hidden md:flex gap-8 items-center w-1/3">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-[13px] font-medium uppercase tracking-widest transition-colors hover:text-black/60"
+        {/* 1. Sol: Naviqasiya */}
+        <nav className="hidden md:flex gap-8 items-center w-1/3 h-full">
+          {MENU_DATA.map((category) => (
+            <div
+              key={category.href}
+              className="h-full flex items-center group relative cursor-pointer"
+              onMouseEnter={() => setHoveredCategory(category.label)}
             >
-              {link.label}
-            </Link>
+              <Link
+                href={category.href}
+                className={cn(
+                  "text-[13px] font-medium uppercase tracking-widest transition-colors py-4 inline-block relative",
+                  "text-muted-foreground hover:text-foreground", // Rəng keçidlərini sadələşdirdim
+                  hoveredCategory === category.label && "text-foreground"
+                )}
+              >
+                {category.label}
+                {/* Underline Animation */}
+                <span className={cn(
+                  "absolute bottom-2 left-0 w-full h-[1.5px] bg-black transform scale-x-0 transition-transform duration-300 ease-out origin-left",
+                  (hoveredCategory === category.label) && "scale-x-100"
+                )} />
+              </Link>
+            </div>
           ))}
         </nav>
 
@@ -69,21 +96,123 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobil Menyu */}
+      {/* Mega Menu Overlay (Desktop) */}
+      <MegaMenu
+        category={MENU_DATA.find(c => c.label === hoveredCategory) || null}
+        isOpen={!!hoveredCategory}
+        onMouseEnter={() => { }} // Menyu daxilində olanda açıq qalsın
+        onMouseLeave={() => setHoveredCategory(null)}
+      />
+
+      {/* Mobil Menyu (Tabs + Accordion Design) */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 w-full bg-background border-b animate-in slide-in-from-top-2">
-          <nav className="flex flex-col p-4 gap-4">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsMenuOpen(false)}
-                className="text-lg font-medium py-2 border-b border-gray-100 last:border-0"
+        <div className="md:hidden fixed top-24 left-0 w-full bg-background h-[calc(100vh-96px)] animate-in slide-in-from-left-2 z-40 flex flex-col overflow-hidden">
+
+          {/* Tabs Navigation */}
+          <div className="flex w-full border-b overflow-x-auto no-scrollbar shrink-0">
+            {MENU_DATA.map((category) => (
+              <button
+                key={category.label}
+                onClick={() => setMobileTab(category.label)}
+                className={cn(
+                  "flex-1 py-4 text-xs font-bold uppercase tracking-widest text-center whitespace-nowrap px-4 border-b-2 transition-colors",
+                  mobileTab === category.label
+                    ? "border-black text-foreground"
+                    : "border-transparent text-muted-foreground"
+                )}
               >
-                {link.label}
-              </Link>
+                {category.label}
+              </button>
             ))}
-          </nav>
+          </div>
+
+          {/* Tab Content Area */}
+          <div className="flex-1 overflow-y-auto p-6 pb-20">
+            <div className="flex flex-col gap-0">
+
+              {activeCategory?.subcategories.map((sub, index) => {
+                const isExpanded = expandedItems.includes(sub.title);
+
+                // 1. Başlıq yoxdursa (Yeni Gələnlər kimi) - Birbaşa linklər
+                if (!sub.title) {
+                  return (
+                    <div key={index} className="flex flex-col gap-4 border-b pb-6 mb-4 last:border-0 last:pb-0 last:mb-0">
+                      {sub.items.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setIsMenuOpen(false)}
+                          className="text-[15px] font-medium uppercase tracking-wide text-foreground"
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  );
+                }
+
+                // 2. Başlıq varsa (Geyim, Ayaqqabı) - Accordion
+                return (
+                  <div key={index} className="py-0">
+                    <button
+                      onClick={() => toggleAccordion(sub.title)}
+                      className="flex items-center justify-between w-full py-3 uppercase text-[13px] font-bold tracking-widest text-foreground hover:opacity-70 transition-opacity"
+                    >
+                      {sub.title}
+                      {isExpanded ? <Minus size={18} /> : <Plus size={18} />}
+                    </button>
+
+                    <div
+                      className={cn(
+                        "overflow-hidden transition-all duration-300 ease-in-out",
+                        isExpanded ? "max-h-[500px] opacity-100 mb-4" : "max-h-0 opacity-0"
+                      )}
+                    >
+                      <ul className="flex flex-col gap-2 pl-2 pb-2">
+                        {sub.items.map((item) => (
+                          <li key={item.href}>
+                            <Link
+                              href={item.href}
+                              onClick={() => setIsMenuOpen(false)}
+                              className="text-sm text-muted-foreground hover:text-foreground capitalize"
+                            >
+                              {item.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                );
+              })}
+
+            </div>
+
+            {/* Vizual Sahə - Mobil üçün Seçilmiş Şəkil (Featured Image) */}
+            {activeCategory?.featuredImage && (
+              <Link
+                href={`${activeCategory.href}/new`}
+                onClick={() => setIsMenuOpen(false)}
+                className="mt-8 rounded-lg overflow-hidden relative aspect-video w-full animate-in fade-in slide-in-from-bottom-4 duration-700 shrink-0 block"
+              >
+                <Image
+                  src={activeCategory.featuredImage}
+                  alt={`${activeCategory.label} Collection`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 300px"
+                />
+
+                {/* "Yeni Gələnlər" Label Bar under image (overlay style matching desktop) */}
+                <div className="absolute bottom-0 left-0 w-full bg-white border-t border-gray-100 py-3 px-4 flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-widest text-black">
+                    {activeCategory.label} ÜÇÜN YENİ
+                  </span>
+                  <ArrowRight size={16} className="text-black" />
+                </div>
+              </Link>
+            )}
+          </div>
         </div>
       )}
     </header>
