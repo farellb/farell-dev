@@ -6,6 +6,8 @@
 
   --font-sans: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
+
+  --animate-spin-slow: spin 8s linear infinite;
 }
 
 @layer base {
