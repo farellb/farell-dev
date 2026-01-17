@@ -3,6 +3,7 @@ import { Hero } from '@/components/landing/Hero';
 import { BrandPhilosophy } from '@/components/landing/BrandPhilosophy';
 import { CategoryGrid } from '@/components/landing/CategoryGrid';
 import VisionSection from '@/components/landing/VisionSection';
+import MarqueeSection from '@/components/landing/MarqueeSection';
 import { StoreSection } from '@/components/landing/StoreSection';
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <VisionSection />
       <BrandPhilosophy />
       <CategoryGrid />
+      <MarqueeSection />
       <StoreSection />
     </main>
   );
