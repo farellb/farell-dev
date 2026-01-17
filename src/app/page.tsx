@@ -1,4 +1,5 @@
 import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/landing/Hero';
 import { BrandPhilosophy } from '@/components/landing/BrandPhilosophy';
 import { CategoryGrid } from '@/components/landing/CategoryGrid';
@@ -16,6 +17,7 @@ export default function Home() {
       <CategoryGrid />
       <MarqueeSection />
       <StoreSection />
+      <Footer />
     </main>
   );
 }
