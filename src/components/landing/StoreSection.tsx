@@ -10,10 +10,10 @@ export function StoreSection() {
             {/* Arxa Fon Şəkli - Mağaza Fasadı (Mega Store) */}
             <div className="absolute inset-0 z-0 bg-[#0a0a0a]">
                 <Image
-                    src="/store-megastore.png"
+                    src="/photobg-w.png"
                     alt="Farell Brooklyn Store"
                     fill
-                    className="object-contain scale-75 md:scale-230"
+                    className="object-cover"
                     priority
                 />
                 {/* Qaranlıq Örtük */}
