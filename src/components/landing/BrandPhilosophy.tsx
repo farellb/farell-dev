@@ -6,7 +6,7 @@ export function BrandPhilosophy() {
     return (
         <section className="relative w-full py-32 lg:py-48 bg-white overflow-hidden text-black">
 
-            {/* Kağız Arxa Fon Teksturası */}
+
             <div className="absolute inset-0 z-0 opacity-40 pointer-events-none mix-blend-multiply">
                 <svg width="100%" height="100%">
                     <filter id="noiseFilter">
@@ -17,14 +17,14 @@ export function BrandPhilosophy() {
                 </svg>
             </div>
 
-            {/* Vektor (Yuxarı Sağ) */}
+
             <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] opacity-[0.03] pointer-events-none">
                 <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M10 100 C 40 10, 150 10, 190 100 C 210 150, 100 190, 50 150 C 10 120, 150 50, 180 20" stroke="black" strokeWidth="1" />
                 </svg>
             </div>
 
-            {/* Vektor (Aşağı Sol) */}
+
             <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] opacity-[0.03] pointer-events-none rotate-12">
                 <svg viewBox="0 0 200 200" fill="none" stroke="black" strokeWidth="0.5">
                     <rect x="50" y="50" width="100" height="100" />
@@ -36,9 +36,8 @@ export function BrandPhilosophy() {
             <div className="container mx-auto px-6 md:px-12 relative z-10">
                 <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-24">
 
-                    {/* İllustrasiya Sütunu - Sol/Mərkəz (Mobildə Aşağı) */}
-                    <div className="w-full lg:w-1/2 relative flex justify-center mt-8 lg:mt-0">
-                        {/* Çərçivə */}
+                    {/* İllustrasiya Sütunu - Sol/Mərkəz (Mobildə Aşağı) */}<div className="w-full lg:w-1/2 relative flex justify-center mt-8 lg:mt-0">
+
                         <div className="absolute top-4 left-4 w-full h-full border border-black/10 -z-10 translate-x-4 translate-y-4" />
 
                         <div className="relative w-[300px] h-[400px] md:w-[400px] md:h-[550px] bg-white shadow-2xl skew-y-2 transform transition-transform duration-700 hover:skew-y-0">
@@ -48,14 +47,15 @@ export function BrandPhilosophy() {
                                 fill
                                 className="object-cover p-4 bg-white"
                                 sizes="(max-width: 768px) 100vw, 40vw"
+                                loading="lazy"
+                                quality={75}
                             />
-                            {/* Lent Effekti */}
+
                             <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 bg-yellow-100/50 backdrop-blur-sm -rotate-2 shadow-sm" />
                         </div>
                     </div>
 
-                    {/* Məzmun Sütunu - Sağ (Mobildə Yuxarı) */}
-                    <div className="w-full lg:w-1/2 flex flex-col items-start text-left">
+                    {/* Məzmun Sütunu - Sağ (Mobildə Yuxarı) */}<div className="w-full lg:w-1/2 flex flex-col items-start text-left">
                         <span className="font-serif italic text-xl md:text-2xl text-neutral-400 mb-4">
                             vizual qeydlər, cild 01.
                         </span>
@@ -64,7 +64,7 @@ export function BrandPhilosophy() {
                             Mükəmməl <br />
                             <span className="relative inline-block">
                                 Sadəlik
-                                {/* Alt Xətt Vektoru */}
+
                                 <svg className="absolute -bottom-2 w-full h-3" viewBox="0 0 100 10" preserveAspectRatio="none">
                                     <path d="M0 5 Q 50 10 100 5" fill="none" stroke="black" strokeWidth="2" />
                                 </svg>
