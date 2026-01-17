@@ -31,7 +31,7 @@ const CATEGORIES = [
     },
     {
         id: 'accessories',
-        label: 'Aksessuar',
+        label: 'Aksesuar',
         href: '/category/accessories',
         image: '/cat-acc.png',
         alt: 'Farell Brooklyn Accessories',

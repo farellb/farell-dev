@@ -34,10 +34,10 @@ export function BrandPhilosophy() {
             </div>
 
             <div className="container mx-auto px-6 md:px-12 relative z-10">
-                <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                <div className="flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-24">
 
-                    {/* İllustrasiya Sütunu - Sol/Mərkəz */}
-                    <div className="w-full lg:w-1/2 relative flex justify-center">
+                    {/* İllustrasiya Sütunu - Sol/Mərkəz (Mobildə Aşağı) */}
+                    <div className="w-full lg:w-1/2 relative flex justify-center mt-8 lg:mt-0">
                         {/* Çərçivə */}
                         <div className="absolute top-4 left-4 w-full h-full border border-black/10 -z-10 translate-x-4 translate-y-4" />
 
@@ -54,13 +54,13 @@ export function BrandPhilosophy() {
                         </div>
                     </div>
 
-                    {/* Məzmun Sütunu - Sağ */}
+                    {/* Məzmun Sütunu - Sağ (Mobildə Yuxarı) */}
                     <div className="w-full lg:w-1/2 flex flex-col items-start text-left">
-                        <span className="font-serif italic text-2xl text-neutral-400 mb-4">
+                        <span className="font-serif italic text-xl md:text-2xl text-neutral-400 mb-4">
                             vizual qeydlər, cild 01.
                         </span>
 
-                        <h2 className="text-6xl md:text-8xl font-normal uppercase tracking-tighter leading-[0.85] mb-8 relative">
+                        <h2 className="text-5xl md:text-6xl lg:text-8xl font-normal uppercase tracking-tighter leading-[0.9] mb-8 relative">
                             Mükəmməl <br />
                             <span className="relative inline-block">
                                 Sadəlik
@@ -84,7 +84,7 @@ export function BrandPhilosophy() {
                             funksionallıq və estetikanın mükəmməl balansıdır.
                         </p>
 
-                        <div className="mt-12 flex items-center gap-6">
+                        <div className="mt-12 hidden lg:flex items-center gap-6">
                             <div className="flex -space-x-4">
                                 <div className="w-10 h-10 rounded-full border border-black bg-white flex items-center justify-center text-xs font-serif italic">A</div>
                                 <div className="w-10 h-10 rounded-full border border-black bg-neutral-100 flex items-center justify-center text-xs font-serif italic">B</div>
