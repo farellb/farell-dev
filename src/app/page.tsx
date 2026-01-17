@@ -1,6 +1,7 @@
 import { Header } from '@/components/layout/Header';
 import { Hero } from '@/components/landing/Hero';
 import { BrandPhilosophy } from '@/components/landing/BrandPhilosophy';
+import { CategoryGrid } from '@/components/landing/CategoryGrid';
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Header />
       <Hero />
       <BrandPhilosophy />
+      <CategoryGrid />
     </main>
   );
 }
