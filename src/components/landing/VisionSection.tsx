@@ -13,7 +13,6 @@ export default function VisionSection() {
             const { top, height } = containerRef.current.getBoundingClientRect();
             const windowHeight = window.innerHeight;
 
-
             const scrollDistance = height - windowHeight;
             const scrolled = -top;
 
@@ -28,7 +27,6 @@ export default function VisionSection() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-
     const leftY = (1 - progress) * -100;
     const rightY = (1 - progress) * 100;
     const centerScale = 0.8 + (progress * 0.2);
@@ -40,9 +38,8 @@ export default function VisionSection() {
         <section ref={containerRef} className="relative w-full h-[250vh] bg-black">
             <div className="sticky top-0 w-full h-screen overflow-hidden flex flex-col md:flex-row pt-20 lg:pt-24">
 
-
                 <div
-                    className="w-full md:w-1/3 h-full relative border-r border-white/10 transition-transform duration-75 ease-linear will-change-transform"
+                    className="w-full md:w-1/3 h-full relative border-r border-white/10 transition-transform duration-300 ease-out will-change-transform"
                     style={{ transform: `translateY(${leftY}%)` }}
                 >
                     <Image src="/texture.png" alt="Texture" fill className="object-cover opacity-80" loading="lazy" quality={70} sizes="(max-width: 768px) 100vw, 33vw" />
@@ -54,9 +51,8 @@ export default function VisionSection() {
                     </div>
                 </div>
 
-
                 <div
-                    className="w-full md:w-1/3 h-full relative border-r border-white/10 z-10 flex items-center justify-center"
+                    className="w-full md:w-1/3 h-full relative border-r border-white/10 z-10 flex items-center justify-center transition-all duration-300 ease-out will-change-transform"
                     style={{
                         transform: `scale(${centerScale})`,
                         opacity: centerOpacity
@@ -72,9 +68,8 @@ export default function VisionSection() {
                     </div>
                 </div>
 
-
                 <div
-                    className="w-full md:w-1/3 h-full relative transition-transform duration-75 ease-linear will-change-transform"
+                    className="w-full md:w-1/3 h-full relative transition-transform duration-300 ease-out will-change-transform"
                     style={{ transform: `translateY(${rightY}%)` }}
                 >
                     <Image src="/structure.png" alt="Architecture" fill className="object-cover opacity-80" loading="lazy" quality={70} sizes="(max-width: 768px) 100vw, 33vw" />
@@ -87,7 +82,6 @@ export default function VisionSection() {
                 </div>
 
             </div>
-
 
             <div className={`absolute bottom-10 left-1/2 -translate-x-1/2 text-white/50 text-sm tracking-[0.5em] transition-opacity duration-500 whitespace-nowrap ${progress > 0.9 ? 'opacity-0' : 'opacity-100'}`}>
                 BİRLƏŞDİRMƏK ÜÇÜN SÜRÜŞDÜR

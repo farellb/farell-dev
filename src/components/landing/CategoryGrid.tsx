@@ -65,14 +65,14 @@ export function CategoryGrid() {
                                 quality={75}
                             />
 
-                            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-500" />
+                            <div className="absolute inset-0 bg-black/10 md:bg-black/30 group-hover:bg-black/10 transition-colors duration-500" />
                         </div>
 
 
                         <div className="absolute inset-0 z-10 flex flex-col justify-between p-8 md:p-12">
 
 
-                            <div className="self-end opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 text-white">
+                            <div className="self-end opacity-100 md:opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 text-white">
                                 <ArrowUpRight size={32} weight="light" />
                             </div>
 
@@ -81,7 +81,7 @@ export function CategoryGrid() {
                                 <h2 className="text-4xl lg:text-5xl font-normal uppercase tracking-tighter text-white">
                                     {category.label}
                                 </h2>
-                                <div className="h-px w-0 group-hover:w-full bg-white mt-4 transition-all duration-700 ease-in-out" />
+                                <div className="hidden md:block h-px w-0 group-hover:w-full bg-white mt-4 transition-all duration-700 ease-in-out" />
                             </div>
                         </div>
                     </Link>
