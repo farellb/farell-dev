@@ -16,20 +16,14 @@ import { cn } from "@/lib/utils";
 // Placeholder WhatsApp Number
 const WHATSAPP_NUMBER = "994501234567";
 
+import { MENU_DATA } from "@/lib/menu-data";
+
 const CATEGORIES = [
     { id: "all", label: "Hamısı" },
     { id: "women", label: "Qadın" },
     { id: "men", label: "Kişi" },
     { id: "kids", label: "Uşaq" },
     { id: "accessories", label: "Aksesuar" },
-];
-
-const SUB_CATEGORIES = [
-    { id: "new", label: "YENİ GƏLƏNLƏR" },
-    { id: "shirts", label: "KÖYNƏKLƏR" },
-    { id: "pants", label: "ŞALVARLAR" },
-    { id: "jackets", label: "PENCƏKLƏR" },
-    { id: "shoes", label: "AYAQQABILAR" },
 ];
 
 const MOCK_COLORS = [
@@ -153,7 +147,20 @@ function ShopContent() {
     const router = useRouter();
 
     const selectedCategory = searchParams.get('category') || 'all';
+    const selectedType = searchParams.get('type');
     const [gridCols, setGridCols] = useState<4 | 6>(4);
+
+    // Dynamic Toolbar Items based on Category
+    const currentMenuCategory = MENU_DATA.find(c => c.href.includes(`category=${selectedCategory}`));
+    const toolbarItems = currentMenuCategory
+        ? currentMenuCategory.subcategories.flatMap(s => s.items)
+            .filter(i => !i.href.includes('sort=new') && !i.href.endsWith(`category=${selectedCategory}`))
+            .map(item => {
+                const type = new URLSearchParams(item.href.split('?')[1]).get('type');
+                return { ...item, type };
+            })
+            .filter(i => i.type)
+        : [];
 
     // Quick View State
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
@@ -182,6 +189,17 @@ function ShopContent() {
         } else {
             params.set('category', id);
         }
+        params.delete('type'); // Reset type when changing main category
+        router.push(`/shop?${params.toString()}`);
+    };
+
+    const updateType = (type: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (selectedType === type) {
+            params.delete('type');
+        } else {
+            params.set('type', type);
+        }
         router.push(`/shop?${params.toString()}`);
     };
 
@@ -195,9 +213,11 @@ function ShopContent() {
         setQuickViewImageIndex((prev) => (prev - 1 + quickViewProduct.images.length) % quickViewProduct.images.length);
     };
 
-    const filteredProducts = selectedCategory === "all"
-        ? PRODUCTS
-        : PRODUCTS.filter(p => p.category === selectedCategory);
+    const filteredProducts = PRODUCTS.filter(p => {
+        const categoryMatch = selectedCategory === "all" || p.category === selectedCategory;
+        const typeMatch = !selectedType || p.type === selectedType;
+        return categoryMatch && typeMatch;
+    });
 
     const handleWhatsAppOrder = () => {
         if (!quickViewProduct) return;
@@ -214,25 +234,59 @@ function ShopContent() {
         <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white">
             <Header />
 
-            <main className="pt-24 pb-20">
-                {/* Top Title & Sub-categories */}
-                <div className="container mx-auto px-4 pt-12 pb-8 text-center">
-                    <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-tighter mb-8">
-                        {CATEGORIES.find(c => c.id === selectedCategory)?.label || "KOLLEKSİYA"}
+            <main className="pb-20">
+                <div className="container mx-auto px-4 pt-6 pb-6 flex flex-col items-start justify-center">
+                    <nav className="text-[10px] md:text-xs text-gray-500 mb-3 uppercase tracking-wide flex items-center gap-2">
+                        <Link href="/" className="hover:text-black transition-colors">Ana Səhifə</Link>
+                        <span>/</span>
+                        <Link
+                            href={`/shop?category=${selectedCategory}`}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                updateCategory(selectedCategory);
+                            }}
+                            className={cn(
+                                "transition-colors hover:text-black",
+                                !selectedType && "text-black font-semibold"
+                            )}
+                        >
+                            {CATEGORIES.find(c => c.id === selectedCategory)?.label || "Kolleksiya"}
+                        </Link>
+                        {selectedType && (
+                            <>
+                                <span>/</span>
+                                <span className="text-black font-semibold">
+                                    {toolbarItems.find(t => t.type === selectedType)?.label}
+                                </span>
+                            </>
+                        )}
+                    </nav>
+                    <h1 className="text-3xl md:text-4xl font-bold uppercase tracking-widest text-black animate-in fade-in slide-in-from-left-2 duration-700">
+                        {selectedType
+                            ? toolbarItems.find(t => t.type === selectedType)?.label
+                            : CATEGORIES.find(c => c.id === selectedCategory)?.label || "KOLLEKSİYA"
+                        }
                     </h1>
-
-                    <div className="hidden md:flex flex-wrap justify-center gap-6 md:gap-8 mb-12">
-                        {SUB_CATEGORIES.map((sub) => (
-                            <button key={sub.id} className="text-xs font-bold uppercase tracking-widest hover:underline underline-offset-4 decoration-1 transition-all">
-                                {sub.label}
-                            </button>
-                        ))}
-                    </div>
                 </div>
 
                 {/* Toolbar */}
-                <div className="sticky top-[80px] z-30 bg-white/95 backdrop-blur-sm border-t border-b border-gray-100 mb-8">
-                    <div className="container mx-auto px-4 h-14 flex items-center justify-between">
+                <div className="sticky top-[80px] z-30 bg-white border-b border-gray-200">
+                    <div className="relative container mx-auto px-4 h-14 flex items-center justify-between">
+                        {/* Center: Toolbar Items (Hidden on mobile) */}
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:flex items-center gap-6 overflow-x-auto max-w-[60vw] no-scrollbar whitespace-nowrap px-4">
+                            {toolbarItems.map((item) => (
+                                <button
+                                    key={item.label}
+                                    onClick={() => item.type && updateType(item.type)}
+                                    className={cn(
+                                        "text-xs font-bold uppercase tracking-widest transition-colors shrink-0",
+                                        selectedType === item.type ? "text-black border-b border-black" : "text-gray-400 hover:text-black"
+                                    )}
+                                >
+                                    {item.label}
+                                </button>
+                            ))}
+                        </div>
                         {/* Left: Filter */}
                         <Sheet>
                             <SheetTrigger asChild>

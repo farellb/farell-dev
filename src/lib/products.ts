@@ -4,6 +4,7 @@ export interface Product {
     price: string; // e.g. "120 AZN"
     numericPrice: number;
     category: string;
+    type?: string;
     images: string[];
     description?: string;
     sizes: string[];
@@ -16,6 +17,7 @@ export const PRODUCTS: Product[] = [
         price: "120 AZN",
         numericPrice: 120,
         category: "women",
+        type: "blazers",
         images: [
             "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80",
             "https://images.unsplash.com/photo-1548624149-f32d88e89cd8?w=800&q=80"
@@ -29,6 +31,7 @@ export const PRODUCTS: Product[] = [
         price: "85 AZN",
         numericPrice: 85,
         category: "men",
+        type: "pants",
         images: [
             "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&q=80",
             "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=800&q=80"
@@ -42,6 +45,7 @@ export const PRODUCTS: Product[] = [
         price: "95 AZN",
         numericPrice: 95,
         category: "women",
+        type: "blouses",
         images: [
             "https://images.unsplash.com/photo-1604176354204-9268737828e4?w=800&q=80",
             "https://images.unsplash.com/photo-1563178406-4fb4697980ff?w=800&q=80"
@@ -55,6 +59,7 @@ export const PRODUCTS: Product[] = [
         price: "250 AZN",
         numericPrice: 250,
         category: "women",
+        type: "coats",
         images: [
             "https://images.unsplash.com/photo-1539533018447-63fcce667c1f?w=800&q=80",
             "https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?w=800&q=80"
@@ -68,6 +73,7 @@ export const PRODUCTS: Product[] = [
         price: "65 AZN",
         numericPrice: 65,
         category: "men",
+        type: "t-shirts",
         images: [
             "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80"
         ],
@@ -80,6 +86,7 @@ export const PRODUCTS: Product[] = [
         price: "150 AZN",
         numericPrice: 150,
         category: "accessories",
+        type: "men-bags",
         images: [
             "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80"
         ],
