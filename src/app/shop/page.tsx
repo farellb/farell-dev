@@ -38,7 +38,7 @@ const MOCK_COLORS = [
     { name: "Navy", hex: "#1a2b4b", border: "border-gray-200" }
 ];
 
-const ProductGridItem = ({ product, setQuickViewProduct }: { product: Product, setQuickViewProduct: (p: Product) => void }) => {
+const ProductGridItem = ({ product, setQuickViewProduct, gridCols }: { product: Product, setQuickViewProduct: (p: Product) => void, gridCols: number }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
 
@@ -112,7 +112,10 @@ const ProductGridItem = ({ product, setQuickViewProduct }: { product: Product, s
                 {/* Sizes Overlay */}
                 <div className="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm py-4 px-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out flex justify-center items-center gap-6 z-20 border-t border-gray-100">
                     {(product.sizes || ["S", "M", "L", "XL"]).map((size) => (
-                        <span key={size} className="text-black text-sm font-bold uppercase tracking-widest leading-none">
+                        <span key={size} className={cn(
+                            "text-black font-bold uppercase tracking-widest leading-none",
+                            gridCols === 6 ? "text-xs" : "text-sm"
+                        )}>
                             {size}
                         </span>
                     ))}
@@ -121,12 +124,18 @@ const ProductGridItem = ({ product, setQuickViewProduct }: { product: Product, s
 
             {/* Product Info */}
             <div className="mt-3 flex flex-col gap-1 w-full">
-                <h3 className="text-sm font-normal uppercase tracking-wide text-gray-900 group-hover:underline underline-offset-4 decoration-1 decoration-gray-300 truncate">
+                <h3 className={cn(
+                    "font-normal uppercase tracking-wide text-gray-900 group-hover:underline underline-offset-4 decoration-1 decoration-gray-300 truncate",
+                    gridCols === 6 ? "text-xs" : "text-sm"
+                )}>
                     <Link href={`/product/${product.id}`}>{product.name}</Link>
                 </h3>
 
                 <div className="flex justify-between items-center w-full mt-1">
-                    <span className="text-sm font-medium text-gray-900">{product.price}</span>
+                    <span className={cn(
+                        "font-medium text-gray-900",
+                        gridCols === 6 ? "text-xs" : "text-sm"
+                    )}>{product.price}</span>
 
                     {/* Color Swatches */}
                     <div className="flex items-center gap-1">
@@ -144,13 +153,18 @@ function ShopContent() {
     const router = useRouter();
 
     const selectedCategory = searchParams.get('category') || 'all';
-    const [gridCols, setGridCols] = useState<2 | 3 | 4>(4);
+    const [gridCols, setGridCols] = useState<4 | 6>(4);
 
     // Quick View State
     const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
     const [quickViewSize, setQuickViewSize] = useState<string | null>(null);
     const [quickViewColor, setQuickViewColor] = useState<string>(MOCK_COLORS[0].name);
     const [quickViewImageIndex, setQuickViewImageIndex] = useState(0);
+
+    // Filter State
+    const [selectedSort, setSelectedSort] = useState("Ən Çox Satılanlar");
+    const [selectedFilterColor, setSelectedFilterColor] = useState<string | null>(null);
+    const [selectedFilterSize, setSelectedFilterSize] = useState<string | null>(null);
 
     // Reset states when product changes
     useEffect(() => {
@@ -228,33 +242,95 @@ function ShopContent() {
                                     <span className="sm:hidden">Filtr</span>
                                 </button>
                             </SheetTrigger>
-                            <SheetContent side="left" className="w-[400px] sm:w-[500px] bg-white p-0 flex flex-col h-full">
+                            <SheetContent
+                                side="right"
+                                className="w-full sm:w-[480px] bg-white p-0 flex flex-col h-full border-l border-gray-100 sm:max-w-lg duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right"
+                            >
                                 <SheetHeader className="p-6 border-b border-gray-100">
-                                    <SheetTitle className="text-xl font-light uppercase tracking-wide">Filtr</SheetTitle>
+                                    <SheetTitle className="text-base font-bold uppercase tracking-[0.2em]">Filtr və Sıralama</SheetTitle>
                                 </SheetHeader>
-                                <div className="flex-1 overflow-y-auto p-6">
-                                    <div className="mb-10">
-                                        <h3 className="text-xs font-bold uppercase tracking-widest mb-4 text-gray-400">Kateqoriyalar</h3>
-                                        <div className="space-y-3">
-                                            {CATEGORIES.map((cat) => (
-                                                <button
-                                                    key={cat.id}
-                                                    onClick={() => updateCategory(cat.id)}
-                                                    className={cn(
-                                                        "block text-lg font-light cursor-pointer transition-colors w-full text-left hover:pl-2",
-                                                        selectedCategory === cat.id ? "text-black underline underline-offset-4 decoration-1" : "text-gray-500 hover:text-black"
-                                                    )}
-                                                >
-                                                    {cat.label}
-                                                </button>
-                                            ))}
+                                <div className="flex-1 overflow-y-auto p-6 scrollbar-hide">
+                                    <div className="space-y-12">
+                                        {/* Sort Section */}
+                                        <div>
+                                            <h3 className="text-[10px] font-bold uppercase tracking-widest mb-4 text-gray-500 border-b border-gray-100 pb-2">Sıralama</h3>
+                                            <div className="space-y-3">
+                                                {["Ən Çox Satılanlar", "Yenilər", "Qiymət: Artan", "Qiymət: Azalan"].map((sort) => (
+                                                    <div
+                                                        key={sort}
+                                                        className="flex items-center gap-3 cursor-pointer group py-1"
+                                                        onClick={() => setSelectedSort(sort)}
+                                                    >
+                                                        <div className={cn(
+                                                            "w-3.5 h-3.5 rounded-full border border-gray-300 flex items-center justify-center transition-colors",
+                                                            selectedSort === sort ? "border-black" : "group-hover:border-gray-400"
+                                                        )}>
+                                                            {selectedSort === sort && <div className="w-1.5 h-1.5 rounded-full bg-black" />}
+                                                        </div>
+                                                        <span className={cn(
+                                                            "text-xs font-medium uppercase tracking-wide transition-colors",
+                                                            selectedSort === sort ? "text-black" : "text-gray-500 group-hover:text-black"
+                                                        )}>
+                                                            {sort}
+                                                        </span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Colors Section */}
+                                        <div>
+                                            <h3 className="text-[10px] font-bold uppercase tracking-widest mb-4 text-gray-500 border-b border-gray-100 pb-2">Rəng</h3>
+                                            <div className="flex flex-wrap gap-2">
+                                                {MOCK_COLORS.map((color) => (
+                                                    <button
+                                                        key={color.name}
+                                                        onClick={() => setSelectedFilterColor(selectedFilterColor === color.name ? null : color.name)}
+                                                        className={cn(
+                                                            "w-10 h-10 border transition-all hover:border-gray-400",
+                                                            selectedFilterColor === color.name ? "border-black ring-1 ring-black ring-offset-2" : "border-gray-200"
+                                                        )}
+                                                        style={{ backgroundColor: color.hex }}
+                                                        title={color.name}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Sizes Section */}
+                                        <div>
+                                            <h3 className="text-[10px] font-bold uppercase tracking-widest mb-4 text-gray-500 border-b border-gray-100 pb-2">Ölçü</h3>
+                                            <div className="grid grid-cols-4 gap-2">
+                                                {["XS", "S", "M", "L", "XL", "XXL"].map((size) => (
+                                                    <button
+                                                        key={size}
+                                                        onClick={() => setSelectedFilterSize(selectedFilterSize === size ? null : size)}
+                                                        className={cn(
+                                                            "h-10 border flex items-center justify-center text-[10px] font-bold uppercase tracking-widest transition-all",
+                                                            selectedFilterSize === size
+                                                                ? "border-black bg-black text-white"
+                                                                : "border-gray-200 text-gray-900 hover:border-black"
+                                                        )}
+                                                    >
+                                                        {size}
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-6 border-t border-gray-100 bg-gray-50">
+                                <div className="p-6 border-t border-gray-100 bg-white flex flex-col gap-6">
+                                    <div className="relative h-6 w-full opacity-90">
+                                        <Image
+                                            src="/logo2.png"
+                                            alt="Farell Brooklyn"
+                                            fill
+                                            className="object-contain"
+                                        />
+                                    </div>
                                     <SheetClose asChild>
-                                        <Button className="w-full bg-black text-white h-12 text-xs font-bold uppercase tracking-widest hover:bg-gray-800 rounded-none">
-                                            Tətbiq Et
+                                        <Button className="w-full bg-black text-white h-14 text-xs font-bold uppercase tracking-[0.2em] rounded-none transition-all border border-black hover:bg-white hover:text-black">
+                                            NƏTİCƏLƏRİ GÖSTƏR
                                         </Button>
                                     </SheetClose>
                                 </div>
@@ -268,9 +344,8 @@ function ShopContent() {
                             </span>
                             <div className="h-4 w-px bg-gray-200 hidden sm:block"></div>
                             <div className="flex items-center gap-2">
-                                <button onClick={() => setGridCols(2)} className={cn("p-1", gridCols === 2 ? "text-black" : "text-gray-300")}><Rows size={20} className="rotate-90" weight={gridCols === 2 ? "fill" : "regular"} /></button>
-                                <button onClick={() => setGridCols(3)} className={cn("p-1", gridCols === 3 ? "text-black" : "text-gray-300")}><SquaresFour size={20} weight={gridCols === 3 ? "fill" : "regular"} /></button>
-                                <button onClick={() => setGridCols(4)} className={cn("p-1 hidden lg:block", gridCols === 4 ? "text-black" : "text-gray-300")}><div className="flex gap-0.5"><div className="w-1 h-3 bg-current" /><div className="w-1 h-3 bg-current" /><div className="w-1 h-3 bg-current" /><div className="w-1 h-3 bg-current" /></div></button>
+                                <button onClick={() => setGridCols(4)} className={cn("p-1", gridCols === 4 ? "text-black" : "text-gray-300")}><SquaresFour size={20} weight={gridCols === 4 ? "fill" : "regular"} /></button>
+                                <button onClick={() => setGridCols(6)} className={cn("p-1 hidden lg:block", gridCols === 6 ? "text-black" : "text-gray-300")}><div className="flex gap-0.5"><div className="w-0.5 h-3 bg-current" /><div className="w-0.5 h-3 bg-current" /><div className="w-0.5 h-3 bg-current" /><div className="w-0.5 h-3 bg-current" /><div className="w-0.5 h-3 bg-current" /><div className="w-0.5 h-3 bg-current" /></div></button>
                             </div>
                         </div>
                     </div>
@@ -286,15 +361,14 @@ function ShopContent() {
                     ) : (
                         <div className={cn(
                             "grid gap-x-1 gap-y-10 sm:gap-x-4 sm:gap-y-12 transition-all duration-500",
-                            gridCols === 2 && "grid-cols-2",
-                            gridCols === 3 && "grid-cols-2 md:grid-cols-3",
-                            gridCols === 4 && "grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+                            gridCols === 4 ? "grid-cols-2 md:grid-cols-4" : "grid-cols-3 md:grid-cols-6"
                         )}>
                             {filteredProducts.map((product) => (
                                 <ProductGridItem
                                     key={product.id}
                                     product={product}
                                     setQuickViewProduct={setQuickViewProduct}
+                                    gridCols={gridCols}
                                 />
                             ))}
                         </div>
