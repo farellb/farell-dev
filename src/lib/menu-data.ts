@@ -18,130 +18,130 @@ export interface MenuCategory {
 export const MENU_DATA: MenuCategory[] = [
     {
         label: 'Kişi',
-        href: '/category/men',
+        href: '/shop?category=men',
         featuredImage: '/images/menu/men.png', // Generasiya edilmiş Şəkil
         subcategories: [
             {
                 title: '', // Başlıq yoxdur
                 items: [
-                    { label: 'Yeni Gələnlər', href: '/category/men/new' },
-                    { label: 'Hamısına bax', href: '/category/men/all' },
+                    { label: 'Yeni Gələnlər', href: '/shop?category=men&sort=new' },
+                    { label: 'Hamısına bax', href: '/shop?category=men' },
                 ],
             },
             {
                 title: 'Geyim',
                 items: [
-                    { label: 'Kofta və T-shirt', href: '/category/men/t-shirts' },
-                    { label: 'Şalvarlar', href: '/category/men/pants' },
-                    { label: 'Cinslər', href: '/category/men/jeans' },
-                    { label: 'Pencək və Kostyum', href: '/category/men/suits' },
-                    { label: 'Mont və Gödəkcə', href: '/category/men/jackets' },
-                    { label: 'Şortlar', href: '/category/men/shorts' },
+                    { label: 'Kofta və T-shirt', href: '/shop?category=men&type=t-shirts' },
+                    { label: 'Şalvarlar', href: '/shop?category=men&type=pants' },
+                    { label: 'Cinslər', href: '/shop?category=men&type=jeans' },
+                    { label: 'Pencək və Kostyum', href: '/shop?category=men&type=suits' },
+                    { label: 'Mont və Gödəkcə', href: '/shop?category=men&type=jackets' },
+                    { label: 'Şortlar', href: '/shop?category=men&type=shorts' },
                 ],
             },
             {
                 title: 'Ayaqqabı',
                 items: [
-                    { label: 'Krasovkalar', href: '/category/men/sneakers' },
-                    { label: 'Klassik Ayaqqabılar', href: '/category/men/classic-shoes' },
-                    { label: 'Botlar', href: '/category/men/boots' },
-                    { label: 'Loaferlər', href: '/category/men/loafers' },
+                    { label: 'Krasovkalar', href: '/shop?category=men&type=sneakers' },
+                    { label: 'Klassik Ayaqqabılar', href: '/shop?category=men&type=classic-shoes' },
+                    { label: 'Botlar', href: '/shop?category=men&type=boots' },
+                    { label: 'Loaferlər', href: '/shop?category=men&type=loafers' },
                 ],
             },
         ],
     },
     {
         label: 'Qadın',
-        href: '/category/women',
+        href: '/shop?category=women',
         featuredImage: '/images/menu/women.png',
         subcategories: [
             {
                 title: '', // Başlıq yoxdur
                 items: [
-                    { label: 'Yeni Gələnlər', href: '/category/women/new' },
-                    { label: 'Hamısına bax', href: '/category/women/all' },
+                    { label: 'Yeni Gələnlər', href: '/shop?category=women&sort=new' },
+                    { label: 'Hamısına bax', href: '/shop?category=women' },
                 ],
             },
             {
                 title: 'Geyim',
                 items: [
-                    { label: 'Donlar', href: '/category/women/dresses' },
-                    { label: 'Bluz və Köynək', href: '/category/women/blouses' },
-                    { label: 'Şalvarlar', href: '/category/women/pants' },
-                    { label: 'Ətəklər', href: '/category/women/skirts' },
-                    { label: 'Pencəklər', href: '/category/women/blazers' },
-                    { label: 'Palto və Gödəkcə', href: '/category/women/coats' },
+                    { label: 'Donlar', href: '/shop?category=women&type=dresses' },
+                    { label: 'Bluz və Köynək', href: '/shop?category=women&type=blouses' },
+                    { label: 'Şalvarlar', href: '/shop?category=women&type=pants' },
+                    { label: 'Ətəklər', href: '/shop?category=women&type=skirts' },
+                    { label: 'Pencəklər', href: '/shop?category=women&type=blazers' },
+                    { label: 'Palto və Gödəkcə', href: '/shop?category=women&type=coats' },
                 ],
             },
             {
                 title: 'Ayaqqabı',
                 items: [
-                    { label: 'Dabanlı Ayaqqabılar', href: '/category/women/heels' },
-                    { label: 'Krasovkalar', href: '/category/women/sneakers' },
-                    { label: 'Sandallar', href: '/category/women/sandals' },
-                    { label: 'Botlar', href: '/category/women/boots' },
+                    { label: 'Dabanlı Ayaqqabılar', href: '/shop?category=women&type=heels' },
+                    { label: 'Krasovkalar', href: '/shop?category=women&type=sneakers' },
+                    { label: 'Sandallar', href: '/shop?category=women&type=sandals' },
+                    { label: 'Botlar', href: '/shop?category=women&type=boots' },
                 ],
             },
         ],
     },
     {
         label: 'Uşaq',
-        href: '/category/kids',
+        href: '/shop?category=kids',
         featuredImage: '/images/menu/kids.png',
         subcategories: [
             {
                 title: '', // Başlıq yoxdur
                 items: [
-                    { label: 'Yeni Gələnlər', href: '/category/kids/new' },
-                    { label: 'Hamısına bax', href: '/category/kids/all' },
+                    { label: 'Yeni Gələnlər', href: '/shop?category=kids&sort=new' },
+                    { label: 'Hamısına bax', href: '/shop?category=kids' },
                 ],
             },
             {
                 title: 'Oğlan Uşağı',
                 items: [
-                    { label: 'T-shirtlər', href: '/category/kids/boys-tshirts' },
-                    { label: 'Şalvarlar', href: '/category/kids/boys-pants' },
-                    { label: 'Dəstlər', href: '/category/kids/boys-sets' },
+                    { label: 'T-shirtlər', href: '/shop?category=kids&gender=boy&type=t-shirts' },
+                    { label: 'Şalvarlar', href: '/shop?category=kids&gender=boy&type=pants' },
+                    { label: 'Dəstlər', href: '/shop?category=kids&gender=boy&type=sets' },
                 ],
             },
             {
                 title: 'Qız Uşağı',
                 items: [
-                    { label: 'Donlar', href: '/category/kids/girls-dresses' },
-                    { label: 'Ətəklər', href: '/category/kids/girls-skirts' },
-                    { label: 'Dəstlər', href: '/category/kids/girls-sets' },
+                    { label: 'Donlar', href: '/shop?category=kids&gender=girl&type=dresses' },
+                    { label: 'Ətəklər', href: '/shop?category=kids&gender=girl&type=skirts' },
+                    { label: 'Dəstlər', href: '/shop?category=kids&gender=girl&type=sets' },
                 ],
             },
         ],
     },
     {
         label: 'Aksesuar',
-        href: '/category/accessories',
+        href: '/shop?category=accessories',
         featuredImage: '/images/menu/accessories.png',
         subcategories: [
             {
                 title: '', // Başlıq yoxdur
                 items: [
-                    { label: 'Yeni Gələnlər', href: '/category/accessories/new' },
-                    { label: 'Hamısına bax', href: '/category/accessories/all' },
+                    { label: 'Yeni Gələnlər', href: '/shop?category=accessories&sort=new' },
+                    { label: 'Hamısına bax', href: '/shop?category=accessories' },
                 ],
             },
             {
                 title: 'Çantalar',
                 items: [
-                    { label: 'Qadın Çantaları', href: '/category/accessories/women-bags' },
-                    { label: 'Kişi Çantaları', href: '/category/accessories/men-bags' },
-                    { label: 'Bel Çantaları', href: '/category/accessories/backpacks' },
+                    { label: 'Qadın Çantaları', href: '/shop?category=accessories&type=women-bags' },
+                    { label: 'Kişi Çantaları', href: '/shop?category=accessories&type=men-bags' },
+                    { label: 'Bel Çantaları', href: '/shop?category=accessories&type=backpacks' },
                 ],
             },
             {
                 title: 'Aksesuarlar',
                 items: [
-                    { label: 'Kəmərlər', href: '/category/accessories/belts' },
-                    { label: 'Şərflər', href: '/category/accessories/scarves' },
-                    { label: 'Eynəklər', href: '/category/accessories/sunglasses' },
-                    { label: 'Saatlar', href: '/category/accessories/watches' },
-                    { label: 'Papaqlar', href: '/category/accessories/hats' },
+                    { label: 'Kəmərlər', href: '/shop?category=accessories&type=belts' },
+                    { label: 'Şərflər', href: '/shop?category=accessories&type=scarves' },
+                    { label: 'Eynəklər', href: '/shop?category=accessories&type=sunglasses' },
+                    { label: 'Saatlar', href: '/shop?category=accessories&type=watches' },
+                    { label: 'Papaqlar', href: '/shop?category=accessories&type=hats' },
                 ],
             },
         ],
