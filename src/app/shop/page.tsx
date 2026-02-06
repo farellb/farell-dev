@@ -91,14 +91,13 @@ const ProductGridItem = ({ product, setQuickViewProduct, gridCols }: { product: 
                 )}
 
                 {/* Quick Add Button */}
-                {/* Quick Add Button */}
                 <button
                     onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
                         setQuickViewProduct(product);
                     }}
-                    className="absolute top-2 right-2 z-20 bg-white text-black w-8 h-8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-sm hover:bg-black hover:text-white"
+                    className="absolute top-2 right-2 z-20 w-8 h-8 flex items-center justify-center transition-all duration-300 shadow-sm bg-white text-black hover:bg-black hover:text-white opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
                 >
                     <Plus size={16} weight="regular" />
                 </button>
@@ -270,9 +269,9 @@ function ShopContent() {
                 </div>
 
                 {/* Toolbar */}
-                <div className="sticky top-[80px] z-30 bg-white border-b border-gray-200">
+                <div className="sticky top-24 z-30 bg-white border-b border-gray-200 transition-all duration-300">
                     <div className="relative container mx-auto px-4 h-14 flex items-center justify-between">
-                        {/* Center: Toolbar Items (Hidden on mobile) */}
+                        {/* Center: Toolbar Items (Desktop) */}
                         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hidden lg:flex items-center gap-6 overflow-x-auto max-w-[60vw] no-scrollbar whitespace-nowrap px-4">
                             {toolbarItems.map((item) => (
                                 <button
@@ -403,6 +402,24 @@ function ShopContent() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Mobile Toolbar Items */}
+                    {(toolbarItems.length > 0) && (
+                        <div className="lg:hidden w-full overflow-x-auto no-scrollbar py-3 px-4 border-t border-gray-100 flex items-center gap-6 bg-white">
+                            {toolbarItems.map((item) => (
+                                <button
+                                    key={item.label}
+                                    onClick={() => item.type && updateType(item.type)}
+                                    className={cn(
+                                        "text-xs font-bold uppercase tracking-widest transition-colors shrink-0",
+                                        selectedType === item.type ? "text-black border-b border-black" : "text-gray-400 hover:text-black"
+                                    )}
+                                >
+                                    {item.label}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Product Grid */}
@@ -415,7 +432,7 @@ function ShopContent() {
                     ) : (
                         <div className={cn(
                             "grid gap-x-1 gap-y-10 sm:gap-x-4 sm:gap-y-12 transition-all duration-500",
-                            gridCols === 4 ? "grid-cols-2 md:grid-cols-4" : "grid-cols-3 md:grid-cols-6"
+                            gridCols === 4 ? "grid-cols-2 md:grid-cols-4" : "grid-cols-2 sm:grid-cols-3 md:grid-cols-6"
                         )}>
                             {filteredProducts.map((product) => (
                                 <ProductGridItem
