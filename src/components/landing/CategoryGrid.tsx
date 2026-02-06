@@ -36,7 +36,7 @@ const CATEGORIES = [
         image: '/cat-acc.png',
         alt: 'Farell Brooklyn Accessories',
         style: { objectPosition: 'center' }
-    }
+    } //test
 ];
 
 export function CategoryGrid() {
