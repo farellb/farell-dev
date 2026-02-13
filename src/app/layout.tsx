@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/layout/Header";
+import { getMenuData } from "@/lib/get-menu";
 
 const barlowCondensed = Barlow_Condensed({
   variable: "--font-barlow",
@@ -23,16 +25,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const menuData = await getMenuData();
+
   return (
     <html lang="en">
       <body
         className={`${barlowCondensed.variable} ${barlowCondensed.className} ${geistMono.variable} antialiased`}
       >
+        <Header menuData={menuData} />
         {children}
       </body>
     </html>

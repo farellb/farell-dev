@@ -2,7 +2,19 @@
 
 import Image from 'next/image';
 
-export function BrandPhilosophy() {
+interface BrandPhilosophyProps {
+    content: Record<string, string>;
+}
+
+export function BrandPhilosophy({ content }: BrandPhilosophyProps) {
+    const subtitle = content?.['subtitle'] || 'vizual qeydlər, cild 01.';
+    const titleLine1 = content?.['title_line_1'] || 'Mükəmməl';
+    const titleLine2 = content?.['title_line_2'] || 'Sadəlik';
+    const titleLine3 = content?.['title_line_3'] || 'Detallarda.';
+    const text = content?.['text'] || 'Sadəlik – ən yüksək incəlikdir. Biz keçici trendləri deyil, zamansız dəyərləri seçirik. Sizin üçün hazırladığımız hər parça, funksionallıq və estetikanın mükəmməl balansıdır.';
+    const ctaText = content?.['cta_text'] || 'Fəlsəfəni Kəşf Et';
+    const imageUrl = content?.['image_url'] || '/fashion-illustration.png';
+
     return (
         <section className="relative w-full py-32 lg:py-48 bg-white overflow-hidden text-black">
 
@@ -42,7 +54,7 @@ export function BrandPhilosophy() {
 
                         <div className="relative w-[300px] h-[400px] md:w-[400px] md:h-[550px] bg-white shadow-2xl skew-y-2 transform transition-transform duration-700 hover:skew-y-0">
                             <Image
-                                src="/fashion-illustration.png"
+                                src={imageUrl}
                                 alt="Farell Brooklyn Sketch"
                                 fill
                                 className="object-cover p-4 bg-white"
@@ -57,19 +69,19 @@ export function BrandPhilosophy() {
 
                     {/* Məzmun Sütunu - Sağ (Mobildə Yuxarı) */}<div className="w-full lg:w-1/2 flex flex-col items-start text-left">
                         <span className="font-serif italic text-xl md:text-2xl text-neutral-400 mb-4">
-                            vizual qeydlər, cild 01.
+                            {subtitle}
                         </span>
 
                         <h2 className="text-5xl md:text-6xl lg:text-8xl font-normal uppercase tracking-tighter leading-[0.9] mb-8 relative">
-                            Mükəmməl <br />
+                            {titleLine1} <br />
                             <span className="relative inline-block">
-                                Sadəlik
+                                {titleLine2}
 
                                 <svg className="absolute -bottom-2 w-full h-3" viewBox="0 0 100 10" preserveAspectRatio="none">
                                     <path d="M0 5 Q 50 10 100 5" fill="none" stroke="black" strokeWidth="2" />
                                 </svg>
                             </span> <br />
-                            Detallarda.
+                            {titleLine3}
                         </h2>
 
                         <div className="flex gap-4 mb-8">
@@ -79,9 +91,7 @@ export function BrandPhilosophy() {
                         </div>
 
                         <p className="text-lg text-neutral-600 font-light leading-relaxed max-w-md">
-                            Sadəlik – ən yüksək incəlikdir. Biz keçici trendləri deyil,
-                            zamansız dəyərləri seçirik. Sizin üçün hazırladığımız hər parça,
-                            funksionallıq və estetikanın mükəmməl balansıdır.
+                            {text}
                         </p>
 
                         <div className="mt-12 hidden lg:flex items-center gap-6">
@@ -90,7 +100,7 @@ export function BrandPhilosophy() {
                                 <div className="w-10 h-10 rounded-full border border-black bg-neutral-100 flex items-center justify-center text-xs font-serif italic">B</div>
                             </div>
                             <span className="text-xs font-bold uppercase tracking-widest border-b border-black pb-1">
-                                Fəlsəfəni Kəşf Et
+                                {ctaText}
                             </span>
                         </div>
                     </div>

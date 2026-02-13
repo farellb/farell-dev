@@ -1,49 +1,70 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from '@phosphor-icons/react/dist/ssr';
+import { ArrowUpRight } from '@phosphor-icons/react';
+import { supabase } from '@/lib/supabase';
 
-const CATEGORIES = [
-    {
-        id: 'men',
-        label: 'Kişi',
-        href: '/category/men',
-        image: '/cat-men.png',
-        alt: 'Farell Brooklyn Men Collection',
-        style: { objectPosition: 'top' }
-    },
-    {
-        id: 'women',
-        label: 'Qadın',
-        href: '/category/women',
-        image: '/cat-women.png',
-        alt: 'Farell Brooklyn Women Collection',
-        style: { objectPosition: 'top' }
-    },
-    {
-        id: 'kids',
-        label: 'Uşaq',
-        href: '/category/kids',
-        image: '/cat-kids.png',
-        alt: 'Farell Brooklyn Kids Collection',
-        style: { objectPosition: 'center' }
-    },
-    {
-        id: 'accessories',
-        label: 'Aksesuar',
-        href: '/category/accessories',
-        image: '/cat-acc.png',
-        alt: 'Farell Brooklyn Accessories',
-        style: { objectPosition: 'center' }
-    } //test
-];
+interface Category {
+    id: string;
+    label: string;
+    href: string;
+    image: string;
+    alt: string;
+}
 
 export function CategoryGrid() {
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchTopLevelCategories() {
+            setLoading(true);
+            try {
+                // Fetch top-level categories (parent_id is null)
+                const { data, error } = await supabase
+                    .from('categories')
+                    .select('id, name, slug, image_url')
+                    .is('parent_id', null)
+                    .order('created_at', { ascending: true }); // Or order by some display_order if we add it
+
+                if (data) {
+                    const formatted = data.map(cat => ({
+                        id: cat.id,
+                        label: cat.name,
+                        href: `/shop?category=${cat.slug}`,
+                        image: cat.image_url || '/placeholder.png', // Fallback image needed?
+                        alt: `Farell Brooklyn ${cat.name}`,
+                    }));
+                    setCategories(formatted);
+                }
+            } catch (err) {
+                console.error("Failed to fetch categories", err);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchTopLevelCategories();
+    }, []);
+
+    if (loading) {
+        return <div className="w-full min-h-screen bg-black flex items-center justify-center text-white">Yüklənir...</div>;
+    }
+
+    if (categories.length === 0) {
+        return (
+            <div className="w-full h-96 bg-black flex items-center justify-center text-gray-500">
+                Kateqoriya tapılmadı. Admin paneldən əlavə edin.
+            </div>
+        );
+    }
+
     return (
         <section className="w-full min-h-screen bg-black">
-            <div className="w-full h-full grid grid-cols-2">
-                {CATEGORIES.map((category, index) => (
+            <div className={`w-full h-full grid ${categories.length === 1 ? 'grid-cols-1' : 'grid-cols-2'}`}>
+                {categories.map((category, index) => (
                     <Link
                         key={category.id}
                         href={category.href}
@@ -53,17 +74,19 @@ export function CategoryGrid() {
                         `}
                     >
 
-                        <div className="absolute inset-0 z-0">
-                            <Image
-                                src={category.image}
-                                alt={category.alt}
-                                fill
-                                className="object-cover transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
-                                style={category.style}
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                                loading="lazy"
-                                quality={75}
-                            />
+                        <div className="absolute inset-0 z-0 bg-gray-900">
+                            {category.image && category.image !== '/placeholder.png' ? (
+                                <Image
+                                    src={category.image}
+                                    alt={category.alt}
+                                    fill
+                                    className="object-cover transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
+                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                    quality={80}
+                                />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center text-gray-700">No Image</div>
+                            )}
 
                             <div className="absolute inset-0 bg-black/10 md:bg-black/30 group-hover:bg-black/10 transition-colors duration-500" />
                         </div>

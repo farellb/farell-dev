@@ -1,16 +1,27 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, ArrowDown } from '@phosphor-icons/react/dist/ssr';
+import { ArrowLeft, ArrowRight, ArrowDown } from '@phosphor-icons/react/dist/ssr'; // Ensure SSR compatible
+import { getContentBlocks } from '@/lib/content';
 
-export function Hero() {
+export async function Hero() {
+    const content = await getContentBlocks('hero');
+
+    const titleLine1 = content['title_line_1'] || 'Detalları';
+    const titleLine2 = content['title_line_2'] || 'Gör';
+    const titleLine3 = content['title_line_3'] || 'Fərqi Hiss Et';
+    const subtitle = content['subtitle'] || 'Zamanın fövqündə duran stil. Sadəlik və mükəmməllik.';
+    const imageUrl = content['image_url'] || '/hero-male.png';
+    const ctaText = content['cta_text'] || 'Kolleksiyanı Kəşf Et'; // Not used in current design but good to have
+    const ctaLink = content['cta_link'] || '/shop'; // Not used in current design but good to have
+
     return (
         <>
 
             <section className="md:hidden relative w-full h-[calc(100vh-4rem)] overflow-hidden">
                 <Image
-                    src="/hero-male.png"
-                    alt="Farell Brooklyn Men's Collection"
+                    src={imageUrl}
+                    alt="Farell Brooklyn Collection"
                     fill
                     className="object-cover object-top"
                     priority
@@ -22,12 +33,12 @@ export function Hero() {
 
                 <div className="absolute right-4 bottom-32 z-10 text-right">
                     <h1 className="text-3xl font-normal uppercase tracking-tighter text-white leading-[0.9] mb-3">
-                        Detalları <br />
-                        <span className="text-white/60">Gör</span>, <br />
-                        Fərqi Hiss Et
+                        {titleLine1} <br />
+                        <span className="text-white/60">{titleLine2}</span>, <br />
+                        {titleLine3}
                     </h1>
                     <p className="text-sm text-white/70 max-w-xs leading-relaxed font-light ml-auto">
-                        Zamanın fövqündə duran stil.
+                        {subtitle}
                     </p>
                 </div>
 
@@ -95,13 +106,13 @@ export function Hero() {
                     <div className="relative z-10 flex flex-col items-start gap-6 lg:gap-8 animate-in fade-in slide-in-from-left-10 duration-1000">
 
                         {/* Əsas Başlıq */}<h1 className="text-6xl lg:text-7xl xl:text-8xl font-normal uppercase tracking-tighter text-black leading-[0.9]">
-                            Detalları <br />
-                            <span className="text-neutral-400">Gör</span>, <br />
-                            Fərqi Hiss Et
+                            {titleLine1} <br />
+                            <span className="text-neutral-400">{titleLine2}</span>, <br />
+                            {titleLine3}
                         </h1>
 
                         {/* Açıqlama */}<p className="text-sm lg:text-base text-neutral-500 max-w-sm leading-relaxed font-light mt-4 tracking-wide">
-                            Zamanın fövqündə duran stil. Sadəlik və mükəmməllik.
+                            {subtitle}
                         </p>
 
                     </div>
@@ -109,8 +120,8 @@ export function Hero() {
 
                 {/* Sağ Tərəf: Şəkil */}<div className="w-1/2 h-full relative bg-neutral-100">
                     <Image
-                        src="/hero-male.png"
-                        alt="Farell Brooklyn Men's Collection"
+                        src={imageUrl}
+                        alt="Farell Brooklyn Collection"
                         fill
                         className="object-cover object-top"
                         priority

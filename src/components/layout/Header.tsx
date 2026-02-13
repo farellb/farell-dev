@@ -6,17 +6,32 @@ import { List, X, ShoppingBag, MagnifyingGlass, Plus, Minus, ArrowRight } from '
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { MENU_DATA } from '@/lib/menu-data';
+import { MenuCategory } from '@/lib/menu-data';
 import { MegaMenu } from './MegaMenu';
 
-export function Header() {
+import { usePathname } from 'next/navigation';
+
+interface HeaderProps {
+  menuData?: MenuCategory[];
+}
+
+export function Header({ menuData }: HeaderProps) {
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Hide Header on Admin pages
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
+  // Use passed data or fallback to empty array (never static data)
+  const categories = menuData || [];
 
   // Mega Menu State (Desktop)
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
 
   // Mobil Menyu Vəziyyəti (State)
-  const [mobileTab, setMobileTab] = useState(MENU_DATA[0].label);
+  const [mobileTab, setMobileTab] = useState(categories[0]?.label || '');
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   const toggleAccordion = (title: string) => {
@@ -25,7 +40,7 @@ export function Header() {
     );
   };
 
-  const activeCategory = MENU_DATA.find(c => c.label === mobileTab);
+  const activeCategory = categories.find(c => c.label === mobileTab);
 
   return (
     <header
@@ -43,7 +58,7 @@ export function Header() {
 
         {/* 1. Sol: Naviqasiya */}
         <nav className="hidden md:flex gap-8 items-center w-1/3 h-full">
-          {MENU_DATA.map((category) => (
+          {categories.map((category) => (
             <div
               key={category.href}
               className="h-full flex items-center group relative cursor-pointer"
@@ -98,7 +113,7 @@ export function Header() {
 
       {/* Mega Menu Overlay (Desktop) */}
       <MegaMenu
-        category={MENU_DATA.find(c => c.label === hoveredCategory) || null}
+        category={categories.find(c => c.label === hoveredCategory) || null}
         isOpen={!!hoveredCategory}
         onMouseEnter={() => { }} // Menyu daxilində olanda açıq qalsın
         onMouseLeave={() => setHoveredCategory(null)}
@@ -110,7 +125,7 @@ export function Header() {
 
           {/* Tabs Navigation */}
           <div className="flex w-full border-b overflow-x-auto no-scrollbar shrink-0">
-            {MENU_DATA.map((category) => (
+            {categories.map((category) => (
               <button
                 key={category.label}
                 onClick={() => setMobileTab(category.label)}
