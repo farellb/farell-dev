@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
     SquaresFour, Tag, TShirt, SignOut, List, X,
-    Storefront, Gear, TextColumns, WhatsappLogo,
+    Gear, TextColumns, WhatsappLogo,
     ArrowSquareOut
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
@@ -67,7 +68,7 @@ export function AdminSidebar() {
                     <List size={20} weight="bold" />
                 </button>
                 <div className="flex items-center gap-2">
-                    <Storefront size={16} weight="fill" className="text-white/60" />
+                    <Image src="/logo.png" alt="Farell" width={20} height={20} className="rounded" />
                     <span className="text-xs font-semibold uppercase tracking-[0.25em] text-white/80">Farell</span>
                 </div>
                 <Link href="/" className="p-2 hover:bg-white/10 rounded-lg transition-colors">
@@ -97,8 +98,8 @@ export function AdminSidebar() {
                 {/* Brand */}
                 <div className="px-5 py-6 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                            <Storefront size={16} weight="fill" className="text-black" />
+                        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center overflow-hidden">
+                            <Image src="/logo.png" alt="Farell" width={32} height={32} className="w-full h-full object-contain p-1" />
                         </div>
                         <div>
                             <h1 className="text-sm font-semibold uppercase tracking-[0.2em]">Farell</h1>

@@ -85,8 +85,8 @@ export default function AdminDashboardPage() {
             value: stats.totalProducts,
             icon: TShirt,
             href: "/admin/products",
-            color: "from-black to-gray-800",
-            iconBg: "bg-white/20",
+            iconColor: "text-gray-700",
+            iconBg: "bg-gray-100",
             description: "Ümumi məhsul sayı"
         },
         {
@@ -94,8 +94,8 @@ export default function AdminDashboardPage() {
             value: stats.totalCategories,
             icon: Tag,
             href: "/admin/categories",
-            color: "from-amber-500 to-amber-600",
-            iconBg: "bg-white/20",
+            iconColor: "text-amber-600",
+            iconBg: "bg-amber-50",
             description: `${stats.rootCategories} ana kateqoriya`
         },
         {
@@ -103,8 +103,8 @@ export default function AdminDashboardPage() {
             value: 0,
             icon: WhatsappLogo,
             href: "/admin/inquiries",
-            color: "from-green-500 to-green-600",
-            iconBg: "bg-white/20",
+            iconColor: "text-green-600",
+            iconBg: "bg-green-50",
             description: "WhatsApp sorğuları"
         },
         {
@@ -112,8 +112,8 @@ export default function AdminDashboardPage() {
             value: stats.rootCategories,
             icon: FolderSimple,
             href: "/admin/categories",
-            color: "from-violet-500 to-violet-600",
-            iconBg: "bg-white/20",
+            iconColor: "text-violet-600",
+            iconBg: "bg-violet-50",
             description: "Menyu strukturu"
         },
     ];
@@ -141,7 +141,7 @@ export default function AdminDashboardPage() {
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                 <div>
                     <p className="text-sm text-gray-400 font-medium">{formatDate()}</p>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1">{greeting()} 👋</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1">{greeting()}</h1>
                 </div>
                 <Link
                     href="/admin/products/new"
@@ -160,24 +160,18 @@ export default function AdminDashboardPage() {
                         <Link
                             key={stat.label}
                             href={stat.href}
-                            className={cn(
-                                "relative overflow-hidden rounded-2xl p-4 sm:p-5 text-white transition-all duration-300 group",
-                                `bg-gradient-to-br ${stat.color}`,
-                                "hover:shadow-xl hover:-translate-y-1 hover:shadow-black/10"
-                            )}
+                            className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 transition-all duration-300 group hover:shadow-lg hover:-translate-y-1 hover:shadow-black/5"
                         >
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <p className="text-white/60 text-[11px] sm:text-xs font-medium uppercase tracking-wider">{stat.label}</p>
-                                    <p className="text-2xl sm:text-3xl font-bold mt-1.5">{stat.value}</p>
-                                    <p className="text-white/50 text-[11px] sm:text-xs mt-1">{stat.description}</p>
+                                    <p className="text-gray-400 text-[11px] sm:text-xs font-medium uppercase tracking-wider">{stat.label}</p>
+                                    <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1.5">{stat.value}</p>
+                                    <p className="text-gray-400 text-[11px] sm:text-xs mt-1">{stat.description}</p>
                                 </div>
                                 <div className={cn("w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center", stat.iconBg)}>
-                                    <Icon size={20} weight="fill" className="text-white/80" />
+                                    <Icon size={20} weight="fill" className={stat.iconColor} />
                                 </div>
                             </div>
-                            {/* Decorative circle */}
-                            <div className="absolute -right-4 -bottom-4 w-24 h-24 rounded-full bg-white/5" />
                         </Link>
                     );
                 })}

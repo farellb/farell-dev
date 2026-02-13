@@ -20,7 +20,7 @@ export default async function ShopPage({ searchParams }: PageProps) {
 
     // Fetch products, menu data, and filter options in parallel
     const [products, menuData, filterOptions] = await Promise.all([
-        getProducts(category),
+        getProducts(category, type),
         getMenuData(),
         getFilterOptions()
     ]);

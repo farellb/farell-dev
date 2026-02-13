@@ -44,7 +44,12 @@ export async function getProductById(id: string): Promise<DatabaseProduct | null
     };
 }
 
-export async function getProducts(categoryId?: string, type?: string, limit = 20): Promise<DatabaseProduct[]> {
+export async function getProducts(categorySlug?: string, typeSlug?: string, limit = 20): Promise<DatabaseProduct[]> {
+    // First, fetch all categories to resolve hierarchy
+    const { data: allCategories } = await supabase
+        .from('categories')
+        .select('id, slug, parent_id');
+
     let query = supabase
         .from('products')
         .select(`
@@ -55,10 +60,37 @@ export async function getProducts(categoryId?: string, type?: string, limit = 20
         `)
         .eq('is_active', true);
 
-    if (categoryId && categoryId !== 'all') {
-        const { data: cat } = await supabase.from('categories').select('id').eq('slug', categoryId).single();
-        if (cat) {
-            query = query.eq('category_id', cat.id);
+    if (allCategories && categorySlug && categorySlug !== 'all') {
+        // Find the root category by slug (e.g., "men")
+        const rootCat = allCategories.find(c => c.slug === categorySlug && !c.parent_id);
+
+        if (typeSlug) {
+            // Type slug is a specific subcategory (e.g., "t-shirts")
+            // Find the exact category with this slug under the root
+            const typeCat = allCategories.find(c => c.slug === typeSlug);
+
+            if (typeCat) {
+                // Collect this category AND all its children (leaf categories)
+                const childIds = allCategories
+                    .filter(c => c.parent_id === typeCat.id)
+                    .map(c => c.id);
+
+                const matchingIds = [typeCat.id, ...childIds];
+                query = query.in('category_id', matchingIds);
+            }
+        } else if (rootCat) {
+            // No type specified — show ALL products under this root category
+            // Collect root + all children + all grandchildren
+            const childIds = allCategories
+                .filter(c => c.parent_id === rootCat.id)
+                .map(c => c.id);
+
+            const grandchildIds = allCategories
+                .filter(c => childIds.includes(c.parent_id!))
+                .map(c => c.id);
+
+            const allMatchingIds = [rootCat.id, ...childIds, ...grandchildIds];
+            query = query.in('category_id', allMatchingIds);
         }
     }
 
