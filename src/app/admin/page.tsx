@@ -5,9 +5,9 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import Image from "next/image";
 import {
-    TShirt, Tag, ShoppingCart, TrendUp,
+    TShirt, Tag, WhatsappLogo,
     ArrowRight, Plus, CaretRight, Clock,
-    Package, Eye, Storefront
+    Package, Storefront, FolderSimple
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
@@ -99,24 +99,22 @@ export default function AdminDashboardPage() {
             description: `${stats.rootCategories} ana kateqoriya`
         },
         {
-            label: "Sifarişlər",
+            label: "Sorğular",
             value: 0,
-            icon: ShoppingCart,
-            href: "#",
-            color: "from-emerald-500 to-emerald-600",
+            icon: WhatsappLogo,
+            href: "/admin/inquiries",
+            color: "from-green-500 to-green-600",
             iconBg: "bg-white/20",
-            description: "Aktiv sifariş",
-            disabled: true
+            description: "WhatsApp sorğuları"
         },
         {
-            label: "Baxış sayı",
-            value: "—",
-            icon: Eye,
-            href: "#",
+            label: "Ana Kateqoriya",
+            value: stats.rootCategories,
+            icon: FolderSimple,
+            href: "/admin/categories",
             color: "from-violet-500 to-violet-600",
             iconBg: "bg-white/20",
-            description: "Bu ay",
-            disabled: true
+            description: "Menyu strukturu"
         },
     ];
 
@@ -161,11 +159,11 @@ export default function AdminDashboardPage() {
                     return (
                         <Link
                             key={stat.label}
-                            href={stat.disabled ? "#" : stat.href}
+                            href={stat.href}
                             className={cn(
                                 "relative overflow-hidden rounded-2xl p-4 sm:p-5 text-white transition-all duration-300 group",
                                 `bg-gradient-to-br ${stat.color}`,
-                                !stat.disabled && "hover:shadow-xl hover:-translate-y-1 hover:shadow-black/10"
+                                "hover:shadow-xl hover:-translate-y-1 hover:shadow-black/10"
                             )}
                         >
                             <div className="flex items-start justify-between">

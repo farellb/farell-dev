@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
     SquaresFour, Tag, TShirt, SignOut, List, X,
-    Storefront, ChartLineUp, Gear, TextColumns,
+    Storefront, Gear, TextColumns, WhatsappLogo,
     ArrowSquareOut
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
@@ -14,21 +14,27 @@ const NAV_SECTIONS = [
     {
         title: "Əsas",
         items: [
-            { label: "Dashboard", href: "/admin", icon: SquaresFour, description: "Ümumi baxış" },
-            { label: "Analitika", href: "/admin/analytics", icon: ChartLineUp, description: "Satış statistikası", disabled: true },
+            { label: "Dashboard", href: "/admin", icon: SquaresFour },
+            { label: "Sorğular", href: "/admin/inquiries", icon: WhatsappLogo },
         ]
     },
     {
         title: "Kataloq",
         items: [
-            { label: "Məhsullar", href: "/admin/products", icon: TShirt, description: "Məhsul idarəetməsi" },
-            { label: "Kateqoriyalar", href: "/admin/categories", icon: Tag, description: "Menyu strukturu" },
+            { label: "Məhsullar", href: "/admin/products", icon: TShirt },
+            { label: "Kateqoriyalar", href: "/admin/categories", icon: Tag },
         ]
     },
     {
         title: "Məzmun",
         items: [
-            { label: "Səhifələr", href: "/admin/content", icon: TextColumns, description: "Sayt məzmunu" },
+            { label: "Səhifələr", href: "/admin/content", icon: TextColumns },
+        ]
+    },
+    {
+        title: "Sistem",
+        items: [
+            { label: "Tənzimləmələr", href: "/admin/settings", icon: Gear },
         ]
     },
 ];
@@ -119,20 +125,16 @@ export function AdminSidebar() {
                                     const Icon = item.icon;
                                     const isActive = pathname === item.href ||
                                         (item.href !== "/admin" && pathname.startsWith(item.href));
-                                    const isDisabled = 'disabled' in item && item.disabled;
 
                                     return (
                                         <Link
                                             key={item.href}
-                                            href={isDisabled ? "#" : item.href}
-                                            onClick={(e) => isDisabled && e.preventDefault()}
+                                            href={item.href}
                                             className={cn(
-                                                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-[13px] group relative",
+                                                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 text-[13px] group",
                                                 isActive
                                                     ? "bg-white text-black font-medium"
-                                                    : isDisabled
-                                                        ? "text-white/20 cursor-not-allowed"
-                                                        : "text-white/50 hover:text-white hover:bg-white/5"
+                                                    : "text-white/50 hover:text-white hover:bg-white/5"
                                             )}
                                         >
                                             <Icon
@@ -140,15 +142,10 @@ export function AdminSidebar() {
                                                 weight={isActive ? "fill" : "regular"}
                                                 className={cn(
                                                     "shrink-0 transition-colors",
-                                                    isActive ? "text-black" : isDisabled ? "text-white/15" : "text-white/40 group-hover:text-white/70"
+                                                    isActive ? "text-black" : "text-white/40 group-hover:text-white/70"
                                                 )}
                                             />
                                             <span>{item.label}</span>
-                                            {isDisabled && (
-                                                <span className="ml-auto text-[9px] uppercase tracking-wider bg-white/5 text-white/20 px-1.5 py-0.5 rounded">
-                                                    Tezliklə
-                                                </span>
-                                            )}
                                         </Link>
                                     );
                                 })}
